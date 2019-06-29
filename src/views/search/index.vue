@@ -1,5 +1,5 @@
 <template>
-	<div class="player-container">player</div>
+	<div class="search-container">search</div>
 </template>
 
 <script>
@@ -16,11 +16,8 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-.player-container {
-	position: fixed;
-	width: 100%;
-	height: 5vh;
-	bottom: 0;
+.search-container {
+    height: 50vh;
 	background: #fff;
 }
 </style>

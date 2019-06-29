@@ -5,7 +5,7 @@ Vue.use(Router);
 
 const routers = [
     {
-        path: '/',
+        path: '',
         name: 'Home',
         redirect: '/recommend'
     },
@@ -18,6 +18,11 @@ const routers = [
         path: '/user',
         name: 'User',
         component: () => import('views/userCenter/user')
+    },
+    {
+        path: '/search',
+        name: 'Search',
+        component: () => import('views/search/index')
     }
 ];
 
@@ -27,5 +32,5 @@ export default new Router({
     // scrollBehavior: () => ({
     //     y: 0
     // }),
-    routers
+    routes: routers
 });

@@ -2,11 +2,13 @@
 	<div id="app">
 		<Header></Header>
 		<Nav></Nav>
-		<transition name="fadeleft">
-			<keep-alive>
-				<router-view></router-view>
-			</keep-alive>
-		</transition>
+		<div class="content-container">
+			<transition name="fadeleft">
+				<keep-alive>
+					<router-view></router-view>
+				</keep-alive>
+			</transition>
+		</div>
 		<player></player>
 	</div>
 </template>
@@ -25,11 +27,19 @@ export default {
 };
 </script>
 
-<style>
+<style  lang="scss" scoped>
+@import '@/styles/mixin.scss';
+
 #app {
 	min-width: 100vw;
 	min-height: 100vh;
 	background: rgb(34, 34, 34);
+}
+
+.content-container {
+	width: 100vw;
+	height: calc(100vh - 2.35rem);
+	overflow: hidden;
 }
 
 .fadeleft-enter-active {
@@ -37,7 +47,7 @@ export default {
 }
 
 .fadeleft-enter {
-	opacity: 0;
+	opacity: 1;
 	transform: translate3d(20%, 0, 0);
 }
 .fadeleft-enter {

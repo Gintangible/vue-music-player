@@ -1,55 +1,73 @@
 <template>
-	<Scroll :data="discList" class="main-container" ref="scroll">
+	<Scroll :data="recommendList" class="main-container" ref="scroll">
 		<!-- 轮播 -->
-		<div class="banner-container">
-
-		</div>
+		<swiper class="swiper-container" v-if="banner.length" :options="swiperOption" ref="mySwiper">
+			<swiperSlide class="swiper-slide" v-for="(item,index) in banner" :key="index">
+				<a :href="item.linkUrl">
+					<img @load="imgOnload" :src="item.picUrl" alt="">
+				</a>
+			</swiperSlide>
+			<div class="swiper-pagination" slot="pagination"></div>
+		</swiper>
 		<!-- 推荐歌单 -->
 		<div class="recommend-container">
-			<div class="gedanTitle" v-show="discList">热门歌单推荐</div>
-			<ul v-if="discList.length" class="discList-ul" ref="discListUl">
-				<li @click="selectItem(item)" class="discList-li" v-for="(item,index) in discList" :key="index">
+			<div class="recommend-title" v-show="recommendList">热门歌单推荐</div>
+			<ul v-if="recommendList.length" class="recommend-list" ref="discListUl">
+				<li @click="selectItem(item)" class="recommend-item" v-for="(item,index) in recommendList" :key="index">
 					<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
-					<div class="discList-con">
+					<div class="recommend-con">
 						<h2>{{item.creator.name}}</h2>
 						<p>{{item.dissname}}</p>
 					</div>
 				</li>
 			</ul>
-			<div class="loading" v-show="discList.length === 0 ? 1 : 0">
-				<!-- <loading></loading> -->
-			</div>
-			<transition name="fade">
-				<router-view></router-view>
-			</transition>
 		</div>
 	</Scroll>
 </template>
 
 <script>
 import Scroll from '@/components/Scroll';
-import { getRecommend, getDiscList } from "@/api/recommend.js";
-
+import { getBannerList, getRecommendList } from '@/api/recommend.js';
+import 'swiper/dist/css/swiper.css'; ////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 export default {
 	data() {
-		return {};
+		return {
+			recommendList: [],
+			banner: [],
+			swiperOption: {
+				autoplay: 2000,
+				pagination: {
+					el: '.swiper-pagination',
+					type: 'bullets'
+				}
+			}
+		};
 	},
 
-	components: { Scroll },
+	components: {
+		Scroll,
+		swiper,
+		swiperSlide
+	},
 
 	created() {
-		this._getRecomend();
-		this._getDiscList();
+		this._getRecommend();
+		this._getRecommendcList();
 	},
 
 	methods: {
-		_getRecomend(){
-			getRecommend().then(res => {
-				console.log(res);
-			})
+		_getRecommend() {
+			getBannerList().then(res => {
+				this.banner = res.data.slider;
+			});
 		},
-		_getDiscList(){
-
+		imgOnload() {},
+		_getRecommendcList() {
+			getRecommendList().then(res => {
+				console.log(res);
+				this.recommendList = res.data;
+			});
 		}
 	}
 };
@@ -59,14 +77,13 @@ export default {
 
 .main-container {
 	width: 100vw;
-	height: 86vh;
+	height: 100%;
 	overflow: hidden;
 }
 
-.banner-container {
+.swiper-container {
 	width: 100%;
 	height: rem(150);
-	background: #fff;
 	img {
 		width: 100%;
 		height: rem(150);
@@ -74,19 +91,26 @@ export default {
 }
 
 .recommend-container {
-	.discList-li {
-		width: 100%;
+	.recommend-title {
+		height: rem(65);
+		text-align: center;
+		line-height: rem(65);
+		color: #ffcd32;
+		font-size: rem(15);
+		letter-spacing: rem(2);
+	}
+	.recommendList-list {
+		position: relative;
 		min-height: rem(80);
 		box-sizing: border-box;
 		padding: 0 rem(20) rem(20) rem(20);
-		position: relative;
 		img {
+			position: absolute;
 			width: rem(60);
 			height: rem(60);
-			position: absolute;
 		}
 	}
-	.discList-con {
+	.recommend-con {
 		padding-left: rem(80);
 		h2 {
 			margin-bottom: rem(10);
@@ -98,13 +122,6 @@ export default {
 			color: hsla(0, 0%, 100%, 0.3);
 			font-size: rem(14);
 		}
-	}
-	.loading {
-		position: fixed;
-		width: 100%;
-		top: 50%;
-		transform: translateY(-50%);
-		// z-index: 200;
 	}
 }
 
