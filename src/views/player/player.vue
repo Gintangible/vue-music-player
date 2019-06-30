@@ -17,10 +17,6 @@ export default {
 </script>
 <style lang='scss' scoped>
 .player-container {
-	position: fixed;
-	width: 100%;
-	height: 5vh;
-	bottom: 0;
-	background: #fff;
+	
 }
 </style>

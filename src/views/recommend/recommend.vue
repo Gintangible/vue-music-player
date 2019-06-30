@@ -26,6 +26,12 @@
 				</ul>
 			</div>
 		</div>
+		<div class="loading-wrap" v-show="recommendList.length === 0">
+			<loading></loading>
+		</div>
+		<transition name="fade">
+			<router-view></router-view>
+		</transition>
 	</Scroll>
 </template>
 
@@ -34,6 +40,8 @@ import Scroll from '@/components/Scroll';
 import { getBannerList, getRecommendList } from '@/api/recommend.js';
 import 'swiper/dist/css/swiper.css'; ////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import loading from '@/components/Loading';
+
 export default {
 	data() {
 		return {
@@ -52,7 +60,8 @@ export default {
 	components: {
 		Scroll,
 		swiper,
-		swiperSlide
+		swiperSlide,
+		loading
 	},
 
 	created() {
@@ -78,8 +87,12 @@ export default {
 			});
 		},
 		selectItem(item) {
-			console.log(item);
-		}
+			this.$router.push({
+				path: `/recommend/${item.dissid}`
+			});
+			this.setDisc(item);
+		},
+		setDisc(item) {}
 	}
 };
 </script>
@@ -123,6 +136,7 @@ export default {
 		letter-spacing: rem(2);
 	}
 	.recommendList-list {
+		margin: 0;
 		position: relative;
 		min-height: rem(80);
 		box-sizing: border-box;
@@ -146,6 +160,13 @@ export default {
 			font-size: rem(14);
 		}
 	}
+}
+
+.loading-wrap {
+	position: fixed;
+	width: 100%;
+	top: 50%;
+	transform: translateY(-50%);
 }
 
 /* 子路由进去动画 */

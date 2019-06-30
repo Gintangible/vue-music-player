@@ -12,7 +12,13 @@ const routers = [
     {
         path: '/recommend',
         name: 'Recommend',
-        component: () => import('views/recommend/recommend')
+        component: () => import('views/recommend/recommend'),
+        children: [
+            {
+                path: ':id',
+                component: () => import('views/recommend/components/recommendDetail')
+            }
+        ]
     },
     {
         path: '/user',
