@@ -1,4 +1,5 @@
 import jsonp from '@/utils/jsonp';
+import fetch from '@/utils/fetch';
 import axios from 'axios';
 import { commonParams, options } from './config';
 
@@ -52,7 +53,7 @@ export function getSongList(disstid) {
         needNewCode: 0
     });
 
-    return axios
+    return fetch
         .get(url, {
             params: data
         })

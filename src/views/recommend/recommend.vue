@@ -1,26 +1,30 @@
 <template>
-	<Scroll :data="recommendList" class="main-container" ref="scroll">
-		<!-- 轮播 -->
-		<swiper class="swiper-container" v-if="banner.length" :options="swiperOption" ref="mySwiper">
-			<swiperSlide class="swiper-slide" v-for="(item,index) in banner" :key="index">
-				<a :href="item.linkUrl">
-					<img @load="imgOnload" :src="item.picUrl" alt="">
-				</a>
-			</swiperSlide>
-			<div class="swiper-pagination" slot="pagination"></div>
-		</swiper>
-		<!-- 推荐歌单 -->
-		<div class="recommend-container">
-			<div class="recommend-title" v-show="recommendList">热门歌单推荐</div>
-			<ul v-if="recommendList.length" class="recommend-list" ref="discListUl">
-				<li @click="selectItem(item)" class="recommend-item" v-for="(item,index) in recommendList" :key="index">
-					<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
-					<div class="recommend-con">
-						<h2>{{item.creator.name}}</h2>
-						<p>{{item.dissname}}</p>
-					</div>
-				</li>
-			</ul>
+	<Scroll v-if="banner.length" :data="recommendList" class="main-container" ref="scroll">
+		<div>
+			<!-- 轮播 -->
+			<div>
+				<swiper class="swiper-container" v-if="banner.length" :options="swiperOption" ref="mySwiper">
+					<swiperSlide class="swiper-slide" v-for="(item,index) in banner" :key="index">
+						<a :href="item.linkUrl">
+							<img @load="imgOnload" :src="item.picUrl" alt="">
+						</a>
+					</swiperSlide>
+					<div class="swiper-pagination" slot="pagination"></div>
+				</swiper>
+			</div>
+			<!-- 推荐歌单 -->
+			<div class="recommend-container">
+				<div class="recommend-title" v-show="recommendList">热门歌单推荐</div>
+				<ul v-if="recommendList.length" class="recommendList-list" ref="recommendUl">
+					<li @click="selectItem(item)" class="recommendList-item" v-for="(item,index) in recommendList" :key="index">
+						<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
+						<div class="recommendItem-con">
+							<h2>{{item.creator.name}}</h2>
+							<p>{{item.dissname}}</p>
+						</div>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</Scroll>
 </template>
@@ -36,7 +40,7 @@ export default {
 			recommendList: [],
 			banner: [],
 			swiperOption: {
-				autoplay: 2000,
+				autoplay: true,
 				pagination: {
 					el: '.swiper-pagination',
 					type: 'bullets'
@@ -62,17 +66,24 @@ export default {
 				this.banner = res.data.slider;
 			});
 		},
-		imgOnload() {},
+		imgOnload() {
+			if (!this.checkloaded) {
+				this.checkloaded = true;
+				this.$refs.scroll.refresh();
+			}
+		},
 		_getRecommendcList() {
 			getRecommendList().then(res => {
-				console.log(res);
-				this.recommendList = res.data;
+				this.recommendList = res.data.list;
 			});
+		},
+		selectItem(item) {
+			console.log(item);
 		}
 	}
 };
 </script>
-<style lang='scss' scoped>
+<style lang='scss'>
 @import '@/styles/mixin.scss';
 
 .main-container {
@@ -88,9 +99,21 @@ export default {
 		width: 100%;
 		height: rem(150);
 	}
+	.swiper-pagination {
+		.swiper-pagination-bullet {
+			opacity: 0.8;
+			border-radius: 4px;
+			transition: all 0.2s; //可设置缓慢变化
+			background: #fff;
+		}
+		.swiper-pagination-bullet-active {
+			width: 30px;
+		}
+	}
 }
 
 .recommend-container {
+	overflow: hidden;
 	.recommend-title {
 		height: rem(65);
 		text-align: center;
@@ -110,7 +133,7 @@ export default {
 			height: rem(60);
 		}
 	}
-	.recommend-con {
+	.recommendItem-con {
 		padding-left: rem(80);
 		h2 {
 			margin-bottom: rem(10);

@@ -29,7 +29,7 @@ export default {
 		// 列表的数据
 		data: {
 			type: Array,
-			default: null
+			default: []
 		},
 		// 是否派发滚动到底部的事件，用于上拉加载
 		pullup: {
