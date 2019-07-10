@@ -90,9 +90,11 @@ export default {
 			this.$router.push({
 				path: `/recommend/${item.dissid}`
 			});
-			this.setDisc(item);
+			this.setRecommendInfo(item);
 		},
-		setDisc(item) {}
+		setRecommendInfo(item) {
+			this.$store.dispatch('setRecommendInfo', item);
+		}
 	}
 };
 </script>

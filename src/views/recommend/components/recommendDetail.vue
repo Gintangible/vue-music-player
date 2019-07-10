@@ -2,21 +2,40 @@
 	<div class="detail-container">
 		<musicList :title="title" :bg-image="bgImage" :songs="songs"></musicList>
 	</div>
-
 </template>
 
 <script type="text/ecmascript-6">
-import musicList from '@/components/MusicList';
+import musicList from '@/views/MusicList';
 export default {
 	data() {
 		return {
-			title: '',
-			bgImage:'',
-			songs:[]
+			songs: []
+		};
+	},
+	computed: {
+		bgImage(){
+			return this.recommendDetailInfo.imgurl;
+		},
+		title() {
+			return this.recommendDetailInfo.dissname;
+		},
+		recommendDetailInfo() {
+			return this.$store.state.recommend.recommendDetailInfo;
 		}
 	},
 	components: {
 		musicList
+	},
+	created() {
+		this._getSongList();
+	},
+	methods: {
+		_getSongList() {
+			if(!this.recommendDetailInfo.dissid) {
+				this.$router.replace('/recommend');
+			}
+			console.log(this.recommendDetailInfo)
+		}
 	}
 };
 </script>
