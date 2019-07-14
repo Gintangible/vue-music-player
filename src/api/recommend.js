@@ -53,7 +53,7 @@ export function getSongList(disstid) {
         needNewCode: 0
     });
 
-    return fetch
+    return axios
         .get(url, {
             params: data
         })

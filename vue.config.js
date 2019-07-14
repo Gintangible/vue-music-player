@@ -71,8 +71,34 @@ module.exports = {
                     .catch(e => {
                         console.log(e);
                     });
-            });
-            app.use('/api', apiRoutes);
+            }),
+                apiRoutes.get('/api/songList', function(req, res) {
+                    var url =
+                        'https://c.y.qq.com/qzone/fcg-bin/fcg_ucc_getcdinfo_byids_cp.fcg';
+
+                    axios
+                        .get(url, {
+                            headers: {
+                                referer: 'https://c.y.qq.com/',
+                                host: 'c.y.qq.com'
+                            },
+                            params: req.query
+                        })
+                        .then(response => {
+                            var ret4 = response.data;
+                            if (typeof ret4 === 'string') {
+                                var reg = /^\w+\(({[^()]+})\)$/;
+                                var matche = ret4.match(reg);
+                                if (matche) {
+                                    ret4 = JSON.parse(matche[1]);
+                                }
+                            }
+                            res.json(ret4);
+                        })
+                        .catch(e => {
+                            console.log(e);
+                        });
+                });
         }
     }
 };

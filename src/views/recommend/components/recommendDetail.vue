@@ -6,6 +6,7 @@
 
 <script type="text/ecmascript-6">
 import musicList from '@/views/MusicList';
+import { getSongList } from '@/api/recommend';
 export default {
 	data() {
 		return {
@@ -13,7 +14,7 @@ export default {
 		};
 	},
 	computed: {
-		bgImage(){
+		bgImage() {
 			return this.recommendDetailInfo.imgurl;
 		},
 		title() {
@@ -31,10 +32,12 @@ export default {
 	},
 	methods: {
 		_getSongList() {
-			if(!this.recommendDetailInfo.dissid) {
+			if (!this.recommendDetailInfo.dissid) {
 				this.$router.replace('/recommend');
 			}
-			console.log(this.recommendDetailInfo)
+			getSongList(this.recommendDetailInfo.dissid).then(res => {
+				console.log(res);
+			})
 		}
 	}
 };
