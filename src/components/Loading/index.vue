@@ -1,34 +1,43 @@
 <template>
 	<div class="loading">
-		<img width="30" height="30" src="./loading.gif">
-		<p class="desc">{{title}}</p>
+		<div class="bounce4"></div>
+		<div class="bounce3"></div>
+		<div class="bounce2"></div>
+		<div class="bounce1"></div>
+		<div class="bounce0"></div>
 	</div>
 </template>
 
-<script>
-export default {
-	data() {
-		return {};
-	},
-	props: {
-		title: {
-			type: String,
-			default: '玩命加载中'
-		}
-	}
-};
-</script>
 <style lang='scss' scoped>
 @import '@/styles/mixin.scss';
 
 .loading {
-	width: 100%;
-	text-align: center;
+	display: flex;
+	justify-content: center;
+	padding: rem(15) 0;
+	> div {
+		margin-right: rem(2);
+		width: rem(10);
+		height: rem(10);
+		background-color: #333;
+		border-radius: 50%;
+		animation: g-bouncedelay 1.4s infinite ease-in-out both;
+		@for $i from 1 through 4 {
+			&.bounce#{$i} {
+				animation-delay: -0.16s * $i;
+			}
+		}
+	}
 }
-.desc {
-	line-height: 20px;
-	font-size: rem(15);
-	color: #f7cd4e;
-	margin-top: rem(5);
+
+@keyframes g-bouncedelay {
+	0%,
+	80%,
+	100% {
+		transform: scale(0);
+	}
+	40% {
+		transform: scale(1);
+	}
 }
 </style>

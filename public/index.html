@@ -1,17 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>vue-music</title>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but vue-music doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-  </body>
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+        <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+        <title>vue-music</title>
+        <style>
+            #appLoading {
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 9999;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                height: 100%;
+                font-size: 20px;
+                background: #efefef;
+            }
+            #appLoading.removeLoading {
+                animation: removeLoad 0.3s 0.5s 1 both;
+            }
+            #appLoading .loader {
+                position: relative;
+                width: 5em;
+                height: 5em;
+                transform: rotate(165deg);
+            }
+            #appLoading .cube1,
+            #appLoading .cube2 {
+                width: 1em;
+                height: 1em;
+                position: absolute;
+                top: 0;
+                left: 0;
+                animation: g-cubemove 1.8s infinite ease-in-out;
+                background-color: rgba(225, 20, 98, 0.75);
+            }
+
+            #appLoading .cube2 {
+                animation-delay: -0.9s;
+                background-color:rgba(111, 202, 220, 0.75)
+            }
+            @keyframes g-cubemove {
+                25% {
+                    transform: translateX(4em) rotate(-90deg) scale(0.5);
+                }
+                50% {
+                    transform: translateX(4em) translateY(4em) rotate(-179deg);
+                }
+                50.1% {
+                    transform: translateX(4em) translateY(4em) rotate(-180deg);
+                }
+                75% {
+                    transform: translateX(0px) translateY(4em) rotate(-270deg)
+                        scale(0.5);
+                }
+                100% {
+                    transform: rotate(-360deg);
+                }
+            }
+            @keyframes removeLoad {
+                from {
+                    opacity: 1;
+                }
+                to {
+                    opacity: 0;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <noscript>
+            <strong
+                >We're sorry but vue-music doesn't work properly without
+                JavaScript enabled. Please enable it to continue.</strong
+            >
+        </noscript>
+        <div id="appLoading">
+            <div class="loader">
+                <div class="cube1"></div>
+                <div class="cube2"></div>
+            </div>
+        </div>
+        <div id="app"></div>
+        <!-- built files will be auto injected -->
+    </body>
 </html>

@@ -16,13 +16,13 @@
 <script>
 import Header from 'views/header/header';
 import Nav from 'views/nav/nav';
-import player from 'views/player/player';
+import Player from 'views/player/player';
 export default {
 	name: 'app',
 	components: {
 		Header,
 		Nav,
-		player
+		Player
 	}
 };
 </script>
@@ -33,7 +33,7 @@ export default {
 #app {
 	min-width: 100vw;
 	min-height: 100vh;
-	background: rgb(34, 34, 34);
+	background: #fff;
 }
 
 .content-container {

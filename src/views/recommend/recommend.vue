@@ -13,7 +13,7 @@
 				</swiper>
 			</div>
 			<!-- 推荐歌单 -->
-			<div class="recommend-container">
+			<!-- <div class="recommend-container">
 				<div class="recommend-title" v-show="recommendList">热门歌单推荐</div>
 				<ul v-if="recommendList.length" class="recommendList-list" ref="recommendUl">
 					<li @click="selectItem(item)" class="recommendList-item" v-for="(item,index) in recommendList" :key="index">
@@ -24,11 +24,9 @@
 						</div>
 					</li>
 				</ul>
-			</div>
+			</div> -->
 		</div>
-		<div class="loading-wrap" v-show="recommendList.length === 0">
-			<loading></loading>
-		</div>
+		<loading></loading>
 		<transition name="fade">
 			<router-view></router-view>
 		</transition>
@@ -65,6 +63,18 @@ export default {
 	},
 
 	created() {
+		const appLoading = document.querySelector('#appLoading');
+
+		if (appLoading) {
+			const animationendFunc = function() {
+				console.log('appLoding is end');
+				document.body.removeChild(appLoading);
+			};
+
+			appLoading.addEventListener('animationend', animationendFunc);
+			appLoading.classList.add('removeLoading');
+		}
+
 		this._getRecommend();
 		this._getRecommendcList();
 	},
@@ -133,7 +143,7 @@ export default {
 		height: rem(65);
 		text-align: center;
 		line-height: rem(65);
-		color: #ffcd32;
+		color: #333;
 		font-size: rem(15);
 		letter-spacing: rem(2);
 	}
@@ -143,6 +153,7 @@ export default {
 		min-height: rem(80);
 		box-sizing: border-box;
 		padding: 0 rem(20) rem(20) rem(20);
+		list-style: none;
 		img {
 			position: absolute;
 			width: rem(60);
@@ -153,12 +164,12 @@ export default {
 		padding-left: rem(80);
 		h2 {
 			margin-bottom: rem(10);
-			color: #fff;
+			color: #333;
 			font-size: rem(15);
 			padding-top: rem(6);
 		}
 		p {
-			color: hsla(0, 0%, 100%, 0.3);
+			color: #888;
 			font-size: rem(14);
 		}
 	}

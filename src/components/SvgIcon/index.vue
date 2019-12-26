@@ -1,6 +1,6 @@
 <template>
-    <svg :class="svgClass" aria-hidden="true">
-        <use :xlink:href="iconName" />
+    <svg class="svg-icon" aria-hidden="true">
+        <use :xlink:href="iconID" />
     </svg>
 </template>
 
@@ -8,7 +8,7 @@
 export default {
     name: 'SvgIcon',
     props: {
-        iconClass: {
+        iconName: {
             type: String,
             required: true
         },
@@ -18,15 +18,8 @@ export default {
         }
     },
     computed: {
-        iconName() {
-            return `#icon-${this.iconClass}`;
-        },
-        svgClass() {
-            if (this.className) {
-                return 'svg-icon ' + this.className;
-            } else {
-                return 'svg-icon';
-            }
+        iconID() {
+            return `#icon-${this.iconName}`;
         }
     }
 };

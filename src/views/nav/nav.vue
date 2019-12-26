@@ -4,10 +4,7 @@
 			<span>推荐</span>
 		</router-link>
 		<router-link to="/singer" class="nav-item">
-			<span>歌手</span>
-		</router-link>
-		<router-link to="/rank" class="nav-item">
-			<span>排行</span>
+			<span>热歌</span>
 		</router-link>
 		<router-link to="/search" class="nav-item">
 			<span>搜索</span>
@@ -36,15 +33,14 @@ export default {
 		display: inline-block;
 		flex: 1;
 		height: 100%;
-		background: rgb(34, 34, 34);
 		line-height: rem(40);
 		text-align: center;
-		color: rgba(255, 255, 255, 0.5);
+		color: #333;
 		font-size: rem(15);
 		&.router-link-active {
 			span {
-				color: #ffcd32;
-				border-bottom: 2px solid #ffcd32;
+				color: #dd001b;
+				border-bottom: 2px solid #dd001b;
 				padding-bottom: rem(5);
 			}
 		}

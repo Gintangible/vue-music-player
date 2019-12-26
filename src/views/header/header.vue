@@ -1,10 +1,10 @@
 <template>
 	<div class="header">
-		<div class="header-con">
-			Intangible
+		<div class="header-title">
+			<svg-icon icon-name="logo" class="logo"></svg-icon>  Intangible
 		</div>
-		<router-link to="/user" class="icon-user" tag="span">
-			<svg-icon icon-class="user"></svg-icon>
+		<router-link to="/user" class="user-btn" tag="span">
+			登录
 		</router-link>
 	</div>
 </template>
@@ -20,29 +20,30 @@ export default {
 @import '~@/styles/mixin.scss';
 
 .header {
+  display: flex;
+  align-items: center;
   width: 100%;
-  height: rem(44);
-  background: rgb(34, 34, 34);
+  height: rem(84);
+  background: #d43c33;
   text-align: center;
   position: relative;
-  padding-top: rem(5);
   box-sizing: border-box;
+  padding: 0 rem(10);
   z-index: 100;
-}
-.header-con {
-  display: inline;
-  margin: auto;
-  color: #ffcd32;
+  font-size: rem(24);
 }
 
-.icon-user {
-  width: rem(44);
-  height: rem(44);
-  line-height: rem(44);
-  color: #ffcd32;
-  text-align: center;
+.header-title {
+  color: #fff;
+}
+
+.user-btn {
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50%;
+  right: rem(15);
+  line-height: rem(44);
+  color: #fff;
+  text-align: center;
+  transform: translateY(-50%);
 }
 </style>
