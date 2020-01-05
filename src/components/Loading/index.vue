@@ -9,8 +9,6 @@
 </template>
 
 <style lang='scss' scoped>
-@import '@/styles/mixin.scss';
-
 .loading {
 	display: flex;
 	justify-content: center;

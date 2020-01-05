@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style  lang="scss" scoped>
-@import '@/styles/mixin.scss';
+$topHeight: rem(84) + rem(44);
 
 #app {
 	min-width: 100vw;
@@ -36,9 +36,11 @@ export default {
 	background: #fff;
 }
 
+// 128
 .content-container {
 	width: 100vw;
-	height: calc(100vh - 2.35rem);
+	height: rem(128);
+	height: calc(100vh - #{$topHeight});
 	overflow: hidden;
 }
 

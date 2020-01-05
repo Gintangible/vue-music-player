@@ -4,3 +4,10 @@ $screen-width: 37.5;
 @function rem($px) {
   	@return $px / $screen-width * 1rem;
 }
+
+
+ @mixin nowrap{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+ }

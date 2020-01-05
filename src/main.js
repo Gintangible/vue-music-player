@@ -4,6 +4,7 @@ import router from './router';
 
 import 'amfe-flexible';
 import 'normalize.css/normalize.css';
+import './assets/css/reset.css'
 import store from './store';
 import VueLazyload from 'vue-lazyload';
 
