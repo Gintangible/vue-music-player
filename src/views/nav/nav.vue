@@ -21,7 +21,6 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-@import '@/styles/mixin.scss';
 .nav-bar {
 	display: flex;
 	width: 100%;

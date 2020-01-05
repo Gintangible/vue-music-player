@@ -17,14 +17,12 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
-@import '~@/styles/mixin.scss';
-
 .header {
   display: flex;
   align-items: center;
   width: 100%;
   height: rem(84);
-  background: #d43c33;
+  background: $titleBg;
   text-align: center;
   position: relative;
   box-sizing: border-box;
@@ -34,7 +32,7 @@ export default {
 }
 
 .header-title {
-  color: #fff;
+  color: $titleColor;
 }
 
 .user-btn {
@@ -42,7 +40,7 @@ export default {
   top: 50%;
   right: rem(15);
   line-height: rem(44);
-  color: #fff;
+  color: $titleColor;
   text-align: center;
   transform: translateY(-50%);
 }

@@ -1,5 +1,5 @@
 const getters = {
-    recommendDetailInfo: state => state.recommend.recommendDetailInfo
+    discInfo: state => state.disc.discInfo
 };
 
 export default getters;

@@ -1,32 +1,30 @@
 <template>
-	<Scroll v-if="banner.length" :data="recommendList" class="main-container" ref="scroll">
+	<Scroll v-if="recommendList.length" :data="dissList" class="main-container" ref="scroll">
 		<div>
 			<!-- 轮播 -->
-			<div>
-				<swiper class="swiper-container" v-if="banner.length" :options="swiperOption" ref="mySwiper">
-					<swiperSlide class="swiper-slide" v-for="(item,index) in banner" :key="index">
-						<a :href="item.linkUrl">
-							<img @load="imgOnload" :src="item.picUrl" alt="">
-						</a>
-					</swiperSlide>
-					<div class="swiper-pagination" slot="pagination"></div>
-				</swiper>
-			</div>
+			<swiper class="swiper-container" v-if="recommendList.length" :options="swiperOption" ref="mySwiper">
+				<swiperSlide class="swiper-slide" v-for="(item,index) in recommendList" :key="index">
+					<a :href="item.linkUrl">
+						<img @load="imgOnload" :src="item.picUrl" alt="">
+					</a>
+				</swiperSlide>
+				<div class="swiper-pagination" slot="pagination"></div>
+			</swiper>
 			<!-- 推荐歌单 -->
-			<!-- <div class="recommend-container">
-				<div class="recommend-title" v-show="recommendList">热门歌单推荐</div>
-				<ul v-if="recommendList.length" class="recommendList-list" ref="recommendUl">
-					<li @click="selectItem(item)" class="recommendList-item" v-for="(item,index) in recommendList" :key="index">
+			<div class="diss-container">
+				<div class="diss-title" v-show="dissList">热门歌单推荐</div>
+				<ul v-if="dissList.length" class="diss-list" ref="recommendUl">
+					<li @click="selectItem(item)" class="dissList-item" v-for="(item,index) in dissList" :key="index">
 						<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
-						<div class="recommendItem-con">
+						<div class="dissItem-con">
 							<h2>{{item.creator.name}}</h2>
 							<p>{{item.dissname}}</p>
 						</div>
 					</li>
 				</ul>
-			</div> -->
+				<loading v-show="!dissLoading"></loading>
+			</div>
 		</div>
-		<loading></loading>
 		<transition name="fade">
 			<router-view></router-view>
 		</transition>
@@ -35,22 +33,25 @@
 
 <script>
 import Scroll from '@/components/Scroll';
-import { getBannerList, getRecommendList } from '@/api/recommend.js';
+import { getRecommend, getDiss } from '@/api/recommend.js';
 import 'swiper/dist/css/swiper.css'; ////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import loading from '@/components/Loading';
+import { ERR_OK } from 'api/config';
 
 export default {
 	data() {
 		return {
 			recommendList: [],
-			banner: [],
+			dissList: [],
+			dissLoading: true,
 			swiperOption: {
 				autoplay: true,
 				pagination: {
 					el: '.swiper-pagination',
 					type: 'bullets'
-				}
+				},
+				loop: true
 			}
 		};
 	},
@@ -63,27 +64,44 @@ export default {
 	},
 
 	created() {
-		const appLoading = document.querySelector('#appLoading');
-
-		if (appLoading) {
-			const animationendFunc = function() {
-				console.log('appLoding is end');
-				document.body.removeChild(appLoading);
-			};
-
-			appLoading.addEventListener('animationend', animationendFunc);
-			appLoading.classList.add('removeLoading');
-		}
-
-		this._getRecommend();
-		this._getRecommendcList();
+		this._getRecommendList();
+		this._getDissList();
 	},
 
 	methods: {
-		_getRecommend() {
-			getBannerList().then(res => {
-				this.banner = res.data.slider;
+		_getRecommendList() {
+			getRecommend().then(res => {
+				if (res.code === ERR_OK) {
+					this.recommendList = res.data.slider;
+					this.appLoading();
+				}
 			});
+		},
+
+		appLoading() {
+			const appLoading = document.querySelector('#appLoading');
+
+			if (appLoading) {
+				const animationendFunc = function() {
+					appLoading.removeEventListener(
+						'animationend',
+						animationendFunc
+					);
+					appLoading.removeEventListener(
+						'webkitAnimationEnd',
+						animationendFunc
+					);
+					document.body.removeChild(appLoading);
+				};
+
+				appLoading.addEventListener('animationend', animationendFunc);
+				appLoading.addEventListener(
+					'webkitAnimationEnd',
+					animationendFunc
+				);
+
+				appLoading.classList.add('removeLoading');
+			}
 		},
 		imgOnload() {
 			if (!this.checkloaded) {
@@ -91,26 +109,27 @@ export default {
 				this.$refs.scroll.refresh();
 			}
 		},
-		_getRecommendcList() {
-			getRecommendList().then(res => {
-				this.recommendList = res.data.list;
+		_getDissList() {
+			getDiss().then(res => {
+				if (res.code === ERR_OK) {
+					this.dissList = res.data.list;
+					this.dissLoading = true;
+				}
 			});
 		},
 		selectItem(item) {
 			this.$router.push({
 				path: `/recommend/${item.dissid}`
 			});
-			this.setRecommendInfo(item);
+			this.setDisc(item);
 		},
-		setRecommendInfo(item) {
-			this.$store.dispatch('setRecommendInfo', item);
+		setDisc(item) {
+			this.$store.dispatch('setDisc', item);
 		}
 	}
 };
 </script>
 <style lang='scss'>
-@import '@/styles/mixin.scss';
-
 .main-container {
 	width: 100vw;
 	height: 100%;
@@ -137,9 +156,9 @@ export default {
 	}
 }
 
-.recommend-container {
+.diss-container {
 	overflow: hidden;
-	.recommend-title {
+	.diss-title {
 		height: rem(65);
 		text-align: center;
 		line-height: rem(65);
@@ -147,7 +166,7 @@ export default {
 		font-size: rem(15);
 		letter-spacing: rem(2);
 	}
-	.recommendList-list {
+	.diss-list {
 		margin: 0;
 		position: relative;
 		min-height: rem(80);
@@ -160,16 +179,16 @@ export default {
 			height: rem(60);
 		}
 	}
-	.recommendItem-con {
+	.dissItem-con {
 		padding-left: rem(80);
 		h2 {
 			margin-bottom: rem(10);
-			color: #333;
+			color: $contentTit;
 			font-size: rem(15);
 			padding-top: rem(6);
 		}
 		p {
-			color: #888;
+			color: $contentDis;
 			font-size: rem(14);
 		}
 	}

@@ -1,11 +1,9 @@
-import jsonp from '@/utils/jsonp';
-import fetch from '@/utils/fetch';
 import axios from 'axios';
 import { commonParams, options } from './config';
 
-export function getBannerList() {
+export function getRecommend() {
     const url =
-        'https://c.y.qq.com/musichall/fcgi-bin/fcg_yqqhomepagerecommend.fcg';
+        'api/getRecommend';
 
     const data = Object.assign({}, commonParams, {
         platform: 'h5',
@@ -13,11 +11,15 @@ export function getBannerList() {
         needNewCode: 1
     });
 
-    return jsonp(url, data, options);
+    return axios.get(url, {
+        params: data
+    }).then(res => {
+        return Promise.resolve(res.data);
+    })
 }
 
-export function getRecommendList() {
-    const url = '/api/getDiscList';
+export function getDiss() {
+    const url = 'api/getDiss';
     const data = Object.assign({}, commonParams, {
         platform: 'yqq',
         hostUin: 0,
@@ -39,25 +41,27 @@ export function getRecommendList() {
         });
 }
 
-export function getSongList(disstid) {
-    const url = '/api/songList';
-
+export function getDiscSongList(disstid) {
+    const url = '/api/getDiscSongList'
+  
     const data = Object.assign({}, commonParams, {
-        disstid: disstid,
-        type: 1,
-        json: 1,
-        utf8: 1,
-        onlysong: 0,
-        platform: 'yqq',
-        hostUin: 0,
-        needNewCode: 0
-    });
-
-    return axios
-        .get(url, {
-            params: data
-        })
-        .then(res => {
-            return Promise.resolve(res.data);
-        });
-}
+      platform: 'yqq',
+      type: 1,
+      json: 1,
+      onlysong: 0,
+      hostUin: 0,
+      loginUin: 0,
+      notice: 0,
+      needNewCode: 0,
+      format: 'json',
+      g_tk: 999222372,
+      disstid
+    })
+  
+    return axios.get(url, {
+      params: data
+    }).then(res => {
+      return Promise.resolve(res.data)
+    })
+  }
+  

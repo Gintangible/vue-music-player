@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import getters from './getters';
-import recommend from './modules/recommend';
+import disc from './modules/disc';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
     modules: {
-        recommend
+        disc
     },
     getters
 });

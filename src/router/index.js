@@ -33,8 +33,8 @@ const routers = [
 ];
 
 export default new Router({
-    mode: 'history',
-    base: '/music',
+    // mode: 'history',
+    // base: '/music',
     // scrollBehavior: () => ({
     //     y: 0
     // }),

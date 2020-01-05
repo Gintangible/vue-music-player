@@ -6,7 +6,10 @@
 
 <script type="text/ecmascript-6">
 import musicList from '@/views/MusicList';
-import { getSongList } from '@/api/recommend';
+import { getDiscSongList } from '@/api/recommend';
+import { ERR_OK } from 'api/config';
+
+
 export default {
 	data() {
 		return {
@@ -15,13 +18,13 @@ export default {
 	},
 	computed: {
 		bgImage() {
-			return this.recommendDetailInfo.imgurl;
+			return this.discInfo.imgurl;
 		},
 		title() {
-			return this.recommendDetailInfo.dissname;
+			return this.discInfo.dissname;
 		},
-		recommendDetailInfo() {
-			return this.$store.state.recommend.recommendDetailInfo;
+		discInfo() {
+			return this.$store.state.disc.discInfo;
 		}
 	},
 	components: {
@@ -32,11 +35,14 @@ export default {
 	},
 	methods: {
 		_getSongList() {
-			if (!this.recommendDetailInfo.dissid) {
+			if (!this.discInfo.dissid) {
 				this.$router.replace('/recommend');
+				return;
 			}
-			getSongList(this.recommendDetailInfo.dissid).then(res => {
-				console.log(res);
+			getDiscSongList(this.discInfo.dissid).then(res => {
+				if (res.code === ERR_OK) {
+					this.songs = res.cdlist[0].songlist;
+				}
 			})
 		}
 	}
