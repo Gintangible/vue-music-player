@@ -12,23 +12,23 @@ const routers = [
     {
         path: '/recommend',
         name: 'Recommend',
-        component: () => import('views/recommend/recommend'),
+        component: () => import('pages/recommend/recommend'),
         children: [
             {
                 path: ':id',
-                component: () => import('views/recommend/components/recommendDetail')
+                component: () => import('pages/disc/disc')
             }
         ]
     },
     {
         path: '/user',
         name: 'User',
-        component: () => import('views/userCenter/user')
+        component: () => import('pages/userCenter/user')
     },
     {
         path: '/search',
         name: 'Search',
-        component: () => import('views/search/index')
+        component: () => import('pages/search/index')
     }
 ];
 

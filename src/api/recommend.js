@@ -18,7 +18,7 @@ export function getRecommend() {
     })
 }
 
-export function getDiss() {
+export function getDisc() {
     const url = 'api/getDiss';
     const data = Object.assign({}, commonParams, {
         platform: 'yqq',

@@ -2,7 +2,7 @@ import Cookie from 'js-cookie';
 
 const disc = {
     state: {
-        discInfo: JSON.parse(Cookie.get('discItem')) || '' // 推荐页详情信息
+        discInfo: Cookie.get('discItem') || '' // 推荐页详情信息
     },
     mutations: {
         SET_DISC_INFO: (state, item) => {

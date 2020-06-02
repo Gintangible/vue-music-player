@@ -1,50 +1,53 @@
 <template>
-	<Scroll v-if="recommendList.length" :data="dissList" class="main-container" ref="scroll">
-		<div>
-			<!-- 轮播 -->
-			<swiper class="swiper-container" v-if="recommendList.length" :options="swiperOption" ref="mySwiper">
-				<swiperSlide class="swiper-slide" v-for="(item,index) in recommendList" :key="index">
-					<a :href="item.linkUrl">
-						<img @load="imgOnload" :src="item.picUrl" alt="">
-					</a>
-				</swiperSlide>
-				<div class="swiper-pagination" slot="pagination"></div>
-			</swiper>
-			<!-- 推荐歌单 -->
-			<div class="diss-container">
-				<div class="diss-title" v-show="dissList">热门歌单推荐</div>
-				<ul v-if="dissList.length" class="diss-list" ref="recommendUl">
-					<li @click="selectItem(item)" class="dissList-item" v-for="(item,index) in dissList" :key="index">
-						<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
-						<div class="dissItem-con">
-							<h2>{{item.creator.name}}</h2>
-							<p>{{item.dissname}}</p>
-						</div>
-					</li>
-				</ul>
-				<loading v-show="!dissLoading"></loading>
+	<div class="main-container">
+		<scroll class="recommend-container" v-if="recommendList.length" :data="discList" ref="recommendWrapDiv">
+			<div>
+				<!-- 轮播 -->
+				<swiper class="swiper-container" v-if="recommendList.length" :options="swiperOption" ref="mySwiper">
+					<swiperSlide class="swiper-slide" v-for="(item,index) in recommendList" :key="index">
+						<a :href="item.linkUrl">
+							<img @load="imgOnload" :src="item.picUrl" alt="">
+						</a>
+					</swiperSlide>
+					<div class="swiper-pagination" slot="pagination"></div>
+				</swiper>
+				<!-- 推荐歌单 -->
+				<div class="diss-container">
+					<div class="diss-title" v-show="discList">热门歌单推荐</div>
+					<ul v-if="discList.length" class="diss-list" ref="discWrapDiv">
+						<li @click="selectItem(item)" class="dissList-item" v-for="(item,index) in discList" :key="index">
+							<img v-lazy="item.imgurl" alt="歌单" :title="item.creator.name">
+							<div class="dissItem-con">
+								<h2>{{item.creator.name}}</h2>
+								<p>{{item.dissname}}</p>
+							</div>
+						</li>
+					</ul>
+					<loading v-show="!discLoading"></loading>
+				</div>
 			</div>
-		</div>
+		</scroll>
 		<transition name="fade">
 			<router-view></router-view>
 		</transition>
-	</Scroll>
+	</div>
 </template>
 
 <script>
-import Scroll from '@/components/Scroll';
-import { getRecommend, getDiss } from '@/api/recommend.js';
+import scroll from '@/components/scroll';
+import { getRecommend, getDisc } from '@/api/recommend.js';
 import 'swiper/dist/css/swiper.css'; ////这里注意具体看使用的版本是否需要引入样式，以及具体位置。
 import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import loading from '@/components/Loading';
+import loading from '@/components/loading';
 import { ERR_OK } from 'api/config';
 
 export default {
+	name: 'Recommend',
 	data() {
 		return {
 			recommendList: [],
-			dissList: [],
-			dissLoading: true,
+			discList: [],
+			discLoading: true,
 			swiperOption: {
 				autoplay: true,
 				pagination: {
@@ -57,7 +60,7 @@ export default {
 	},
 
 	components: {
-		Scroll,
+		scroll,
 		swiper,
 		swiperSlide,
 		loading
@@ -65,7 +68,7 @@ export default {
 
 	created() {
 		this._getRecommendList();
-		this._getDissList();
+		this._getDiscList();
 	},
 
 	methods: {
@@ -106,14 +109,14 @@ export default {
 		imgOnload() {
 			if (!this.checkloaded) {
 				this.checkloaded = true;
-				this.$refs.scroll.refresh();
+				// this.$refs.recommendScroll.refresh();
 			}
 		},
-		_getDissList() {
-			getDiss().then(res => {
+		_getDiscList() {
+			getDisc().then(res => {
 				if (res.code === ERR_OK) {
-					this.dissList = res.data.list;
-					this.dissLoading = true;
+					this.discList = res.data.list;
+					this.discLoading = true;
 				}
 			});
 		},
@@ -132,6 +135,11 @@ export default {
 <style lang='scss'>
 .main-container {
 	width: 100vw;
+	height: 100%;
+	overflow: hidden;
+}
+
+.recommend-container {
 	height: 100%;
 	overflow: hidden;
 }
@@ -167,12 +175,14 @@ export default {
 		letter-spacing: rem(2);
 	}
 	.diss-list {
-		margin: 0;
 		position: relative;
 		min-height: rem(80);
 		box-sizing: border-box;
-		padding: 0 rem(20) rem(20) rem(20);
+		padding: 0 rem(20);
 		list-style: none;
+		.dissList-item {
+			margin-bottom: rem(20);
+		}
 		img {
 			position: absolute;
 			width: rem(60);
@@ -192,13 +202,6 @@ export default {
 			font-size: rem(14);
 		}
 	}
-}
-
-.loading-wrap {
-	position: fixed;
-	width: 100%;
-	top: 50%;
-	transform: translateY(-50%);
 }
 
 /* 子路由进去动画 */

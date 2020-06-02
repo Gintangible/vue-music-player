@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import SvgIcon from '@/components/SvgIcon';
+import svgIcon from '@/components/svgIcon';
 export default {
 	name: 'Header',
-	components: { SvgIcon }
+	components: { svgIcon }
 };
 </script>
 <style lang='scss' scoped>

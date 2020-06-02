@@ -17,7 +17,7 @@ import '@/styles/index.scss';
 
 Vue.use(VueLazyload, {
     error: require('./assets/images/error.jpg'),
-    loading: require('./assets/images/loading.gif')
+    // loading: require('./assets/images/loading.gif')
 });
 
 Vue.config.productionTip = false;

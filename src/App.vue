@@ -14,9 +14,10 @@
 </template>
 
 <script>
-import Header from 'views/header/header';
-import Nav from 'views/nav/nav';
-import Player from 'views/player/player';
+import Header from 'pages/header/header';
+import Nav from 'pages/nav/nav';
+import Player from 'pages/player/player';
+
 export default {
 	name: 'app',
 	components: {
